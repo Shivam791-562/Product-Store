@@ -15,7 +15,7 @@ export const aj = arcjet({
     }),
     tokenBucket({
       mode: "LIVE",
-      refillRate: 30,
+      refillRate: 20,
       interval: 5,
       capacity: 20,
     }),
