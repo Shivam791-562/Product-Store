@@ -4,9 +4,10 @@
   "description": "",
   "main": "backend/sever.js",
   "scripts": {
-    "dev": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
     "frontend": "cd frontend && npm install && npm start",
-    "dev:all": "concurrently \"npm run dev\" \"npm run frontend\""
+    "dev:all": "concurrently \"npm start\" \"npm run frontend\""
   },
   "keywords": [],
   "author": "Shivam",
