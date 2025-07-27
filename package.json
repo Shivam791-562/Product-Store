@@ -4,7 +4,9 @@
   "description": "",
   "main": "backend/sever.js",
   "scripts": {
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "frontend": "cd frontend && npm start",
+    "dev:all": "concurrently \"npm run dev\" \"npm run frontend\""
   },
   "keywords": [],
   "author": "Shivam",
@@ -18,5 +20,8 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
   }
 }
