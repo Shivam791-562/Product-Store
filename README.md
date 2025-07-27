@@ -3,7 +3,10 @@
 ```bash
 npm init -y  
 npm install
+cd frontend
+npm install react-hot-toast react-router-dom axios zustand lucide-react
 ```
+
 
 ## Setup .env file
 
