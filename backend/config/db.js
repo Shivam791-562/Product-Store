@@ -10,9 +10,10 @@ const __dirname = path.dirname(__filename);
 
 // Candidate .env locations (backend/.env preferred)
 const candidates = [
-  path.resolve(__dirname, ".env"),          // backend/.env
-  path.resolve(__dirname, "../.env"),       // project-root/.env (if you keep it at root)
-  path.resolve(process.cwd(), ".env"),      // cwd .env (safety)
+  path.resolve(__dirname, "./.env"),         
+  path.resolve(__dirname, "./backend/.env"),
+  path.resolve(__dirname, "../.env"),      
+  path.resolve(process.cwd(), ".env"),  
 ];
 
 let loadedPath = null;
