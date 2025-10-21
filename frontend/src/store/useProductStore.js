@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 // base url will be dynamic depending on the environment
-const BASE_URL = import.meta.env.MODE === "development" ? "https://product-store-u2tb.onrender.com" : "";
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
 
 export const useProductStore = create((set, get) => ({
   // products state
