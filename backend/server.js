@@ -12,6 +12,7 @@ import { aj } from "./lib/arcjet.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
 
@@ -19,7 +20,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.NODE_ENV === "production" ? false : "http://localhost:5173",
     credentials: true,
   })
 );
@@ -65,7 +66,7 @@ if (process.env.NODE_ENV === "production") {
   // server our react app
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-  app.get("*", (req, res) => {
+  app.get("/*splat", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }
