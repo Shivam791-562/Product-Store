@@ -59,3 +59,5 @@ Terminal 2 (Frontend):
 cd frontend
 npm start
 ```
+
+Deployed Link - https://product-store-qpfv.onrender.com
