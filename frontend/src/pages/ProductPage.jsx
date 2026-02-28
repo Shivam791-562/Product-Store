@@ -67,9 +67,10 @@ function ProductPage() {
             <h2 className="card-title text-2xl mb-6">Edit Product</h2>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 updateProduct(id);
+                navigate("/");
               }}
               className="space-y-6"
             >

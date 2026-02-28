@@ -2,12 +2,13 @@ import { Link, useResolvedPath } from "react-router-dom";
 import { ShoppingBagIcon, ShoppingCartIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
 import { useProductStore } from "../store/useProductStore";
+import { BarChartIcon } from "lucide-react";
 
 function Navbar() {
   const { pathname } = useResolvedPath();
   const isHomePage = pathname === "/";
 
-  const { products } = useProductStore();
+  const { products, pagination } = useProductStore();
 
   return (
     <div className="bg-base-100/80 backdrop-blur-lg border-b border-base-content/10 sticky top-0 z-50">
@@ -31,13 +32,15 @@ function Navbar() {
           {/* RIGHT SECTION */}
           <div className="flex items-center gap-4">
             <ThemeSelector />
-
+            <Link to="/analytics" className="btn btn-ghost btn-circle">
+              <BarChartIcon className="size-5" />
+            </Link>
             {isHomePage && (
               <div className="indicator">
                 <div className="p-2 rounded-full hover:bg-base-200 transition-colors">
                   <ShoppingBagIcon className="size-5" />
                   <span className="badge badge-sm badge-primary indicator-item">
-                    {products.length}
+                    {pagination?.totalProducts ?? products.length}
                   </span>
                 </div>
               </div>

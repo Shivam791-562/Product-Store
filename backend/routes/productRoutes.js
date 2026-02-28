@@ -5,10 +5,12 @@ import {
   getProduct,
   getProducts,
   updateProduct,
+  getAllProductsForAnalytics,
 } from "../controllers/productController.js";
 
 const router = expres.Router();
 
+router.get("/analytics/all", getAllProductsForAnalytics);
 router.get("/", getProducts);
 router.get("/:id", getProduct);
 router.post("/", createProduct);

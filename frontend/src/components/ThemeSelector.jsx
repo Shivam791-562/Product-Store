@@ -1,24 +1,37 @@
+import { useState, useRef, useEffect } from "react";
 import { PaletteIcon } from "lucide-react";
 import { THEMES } from "../constants";
 import { useThemeStore } from "../store/useThemeStore";
 
 function ThemeSelector() {
   const { theme, setTheme } = useThemeStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="dropdown dropdown-end">
+    <div ref={dropdownRef} className="relative">
       {/* DROPDOWN TRIGGER */}
 
-      <button tabIndex={0} className="btn btn-ghost btn-circle">
+      <button className="btn btn-ghost btn-circle" onClick={() => setIsOpen(!isOpen)}>
         <PaletteIcon className="size-5" />
       </button>
 
-      <div
-        tabIndex={0}
-        className="dropdown-content mt-2 p-1 shadow-2xl bg-base-200 backdrop-blur-lg rounded-2xl
-        w-56 border border-base-content/10
-        "
-      >
+      {isOpen && (
+        <div
+          className="absolute right-0 top-full z-50 mt-2 p-1 shadow-2xl bg-base-200 backdrop-blur-lg rounded-2xl
+          w-56 border border-base-content/10
+          "
+        >
         {THEMES.map((themeOption) => (
           <button
             key={themeOption.name}
@@ -30,7 +43,10 @@ function ThemeSelector() {
                     : "hover:bg-base-content/5"
                 }
               `}
-            onClick={() => setTheme(themeOption.name)}
+            onClick={() => {
+              setTheme(themeOption.name);
+              setIsOpen(false);
+            }}
           >
             <PaletteIcon className="size-4" />
             <span className="text-sm font-medium">{themeOption.label}</span>
@@ -43,7 +59,8 @@ function ThemeSelector() {
             </div>
           </button>
         ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

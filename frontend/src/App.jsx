@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 import { Routes, Route } from "react-router-dom";
 import { useThemeStore } from "./store/useThemeStore";
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
       </Routes>
 
       <Toaster />

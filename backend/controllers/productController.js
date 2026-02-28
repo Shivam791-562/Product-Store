@@ -2,13 +2,57 @@ import { sql } from "../config/db.js";
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await sql`
-      SELECT * FROM products
-      ORDER BY created_at DESC
-    `;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const offset = (page - 1) * limit;
+    const search = req.query.search || "";
+    const sort = req.query.sort || "newest";
 
-    console.log("fetched products", products);
-    res.status(200).json({ success: true, data: products });
+    const searchTerm = `%${search}%`;
+
+    let products;
+    if (sort === "price_asc") {
+      products = await sql`
+        SELECT * FROM products
+        WHERE name ILIKE ${searchTerm}
+        ORDER BY price ASC
+        LIMIT ${limit} OFFSET ${offset}
+      `;
+    } else if (sort === "price_desc") {
+      products = await sql`
+        SELECT * FROM products
+        WHERE name ILIKE ${searchTerm}
+        ORDER BY price DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `;
+    } else {
+      products = await sql`
+        SELECT * FROM products
+        WHERE name ILIKE ${searchTerm}
+        ORDER BY created_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `;
+    }
+
+    const totalCountQuery = await sql`
+      SELECT COUNT(*) FROM products
+      WHERE name ILIKE ${searchTerm}
+    `;
+    const totalProducts = parseInt(totalCountQuery[0].count);
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.status(200).json({ 
+      success: true, 
+      data: products,
+      pagination: {
+        currentPage: page,
+        totalPages: totalPages,
+        totalProducts: totalProducts,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    });
+
   } catch (error) {
     console.log("Error in getProducts function", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -95,6 +139,18 @@ export const deleteProduct = async (req, res) => {
     res.status(200).json({ success: true, data: deletedProduct[0] });
   } catch (error) {
     console.log("Error in deleteProduct function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export const getAllProductsForAnalytics = async (req, res) => {
+  try {
+    const products = await sql`
+      SELECT price FROM products
+    `;
+    res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.log("Error in getAllProductsForAnalytics", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
